@@ -1,0 +1,34 @@
+services:
+  # .NET 8 Backend API Service on Render
+  - type: web
+    name: hackathon-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: free
+    region: singapore # or oregon, frankfurt, ohio
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS
+        value: http://+:8080
+      - key: PORT
+        value: 8080
+      - key: ConnectionStrings__DefaultConnection
+        fromDatabase:
+          name: hackathon-postgres
+          property: connectionString
+      - key: Jwt__SecretKey
+        generateValue: true
+      - key: Cors__AllowedOrigins
+        value: https://your-frontend.vercel.app
+
+databases:
+  # Managed PostgreSQL database on Render
+  - name: hackathon-postgres
+    plan: free
+    region: singapore
+    databaseName: hackathondb
+    user: appuser

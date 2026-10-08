@@ -1,0 +1,55 @@
+services:
+  # Database Service (PostgreSQL recommended for modern multi-cloud deployment)
+  database:
+    image: postgres:16-alpine
+    container_name: hackathon-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-appuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-apppassword}
+      POSTGRES_DB: ${POSTGRES_DB:-hackathondb}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-appuser} -d ${POSTGRES_DB:-hackathondb}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # .NET 8 Backend API Service
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+    container_name: hackathon-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=database;Port=5432;Database=${POSTGRES_DB:-hackathondb};Username=${POSTGRES_USER:-appuser};Password=${POSTGRES_PASSWORD:-apppassword}
+      - Cors__AllowedOrigins=http://localhost:3000
+    depends_on:
+      database:
+        condition: service_healthy
+
+  # Next.js Frontend Service (Optional for full-container local stack)
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+    container_name: hackathon-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
