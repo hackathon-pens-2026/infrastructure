@@ -35,7 +35,7 @@ services:
       - DataProtection__KeyDirectory=/tmp/signit-keys
     env_file:
       - path: secrets.env
-        required: false
+        required: true
     depends_on:
       database:
         condition: service_healthy
