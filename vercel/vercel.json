@@ -4,12 +4,6 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/api/proxy/:path*",
-      "destination": "${BACKEND_API_URL}/api/:path*"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",

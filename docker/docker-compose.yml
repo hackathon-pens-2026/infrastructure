@@ -18,7 +18,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # .NET 8 Backend API Service
+  # .NET 10 Backend API Service
   backend:
     volumes:
       - ../data/backend:/app/.data
@@ -33,7 +33,6 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Host=database;Port=5432;Database=${POSTGRES_DB:-hackathondb};Username=${POSTGRES_USER:-appuser};Password=${POSTGRES_PASSWORD:-apppassword}
-      - Cors__AllowedOrigins=http://localhost:3000
       - Storage__RootDirectory=/app/.data/storage
       - DataProtection__KeyDirectory=/app/.data/keys
     env_file:
@@ -53,7 +52,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - BACKEND_URL=http://backend:8080
+      - BACKEND_URL=${BACKEND_URL:-http://signit.indonesiacentral.cloudapp.azure.com:8080}
+      - FRONTEND_ORIGIN=${FRONTEND_ORIGIN:-https://frontend-omega-rust-88.vercel.app}
     depends_on:
       - backend
 

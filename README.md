@@ -83,7 +83,8 @@ Vercel natively supports Next.js in a monorepo:
    - **Framework Preset**: `Next.js`
    - **Root Directory**: Set to `frontend`
 3. Add Environment Variable:
-   - `NEXT_PUBLIC_API_URL`: Your deployed backend URL (e.g., `https://backend.up.railway.app`)
+   - `BACKEND_URL`: `http://signit.indonesiacentral.cloudapp.azure.com:8080` for the current HTTP backend, or its HTTPS origin after TLS is enabled. Do not append `/api/v1`.
+   - `FRONTEND_ORIGIN`: The exact public frontend origin, such as `https://your-project.vercel.app`.
 4. *(Optional)* Copy `infrastructure/vercel/vercel.json` to `frontend/vercel.json` if custom headers or rewrite proxies are needed.
 
 ---
@@ -123,8 +124,8 @@ Vercel natively supports Next.js in a monorepo:
 | File | Purpose | When Teammate Finishes Init |
 |---|---|---|
 | `appsettings.Development.json` | Logging, Postgres ConnectionString, JWT, and CORS for Next.js (`http://localhost:3000`) | Copy or merge into `backend/appsettings.Development.json` |
-| `backend.env.example` | ASP.NET Core environment variable overrides (`ConnectionStrings__DefaultConnection`, `Jwt__SecretKey`) | Copy to `backend/.env.example` or import to Cloud Dashboard |
-| `frontend.env.example` | Next.js API endpoint `NEXT_PUBLIC_API_URL` | Copy to `frontend/.env.example` |
+| `backend.env.example` | ASP.NET Core configuration and RSA JWT variable names | Supply actual private keys outside Git |
+| `frontend.env.example` | Server-only `BACKEND_URL` and `FRONTEND_ORIGIN` | Set in frontend environment/Vercel settings |
 
 ---
 
