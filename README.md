@@ -136,4 +136,4 @@ docker compose -f infrastructure/docker/docker-compose.yml up --build -d
 ```
 - Frontend: `http://localhost:3000`
 - Backend API: `http://localhost:8080`
-- PostgreSQL: `localhost:5432`
+- PostgreSQL: `localhost:5434`
