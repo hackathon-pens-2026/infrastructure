@@ -36,10 +36,15 @@ resource webApp 'Microsoft.Web/sites@2023-01-01' = {
     siteConfig: {
       linuxFxVersion: 'DOCKER|${containerImage}'
       alwaysOn: false
+      healthCheckPath: '/health'
       appSettings: [
         {
           name: 'WEBSITES_PORT'
           value: containerPort
+        }
+        {
+          name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
+          value: 'true'
         }
         {
           name: 'ASPNETCORE_ENVIRONMENT'
@@ -48,6 +53,14 @@ resource webApp 'Microsoft.Web/sites@2023-01-01' = {
         {
           name: 'ASPNETCORE_URLS'
           value: 'http://+:${containerPort}'
+        }
+        {
+          name: 'Storage__RootDirectory'
+          value: '/home/data/storage'
+        }
+        {
+          name: 'DataProtection__KeyDirectory'
+          value: '/home/data/keys'
         }
       ]
     }

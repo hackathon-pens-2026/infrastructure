@@ -7,7 +7,7 @@ LOCATION="${LOCATION:-southeastasia}"
 APP_NAME="${APP_NAME:-hackathon-backend-$RANDOM}"
 IMAGE_NAME="${IMAGE_NAME:-ghcr.io/your-github-user/hackathon-backend:latest}"
 
-echo "=== Deploying .NET 8 Backend Container to Azure App Service ==="
+echo "=== Deploying .NET 10 Backend Container to Azure App Service ==="
 echo "Resource Group : $RESOURCE_GROUP"
 echo "Location       : $LOCATION"
 echo "App Name       : $APP_NAME"
