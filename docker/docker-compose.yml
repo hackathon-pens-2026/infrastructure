@@ -20,6 +20,8 @@ services:
 
   # .NET 8 Backend API Service
   backend:
+    volumes:
+      - ../data/backend:/app/.data
     build:
       context: ../../backend
       dockerfile: Dockerfile
@@ -50,7 +52,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8080
+      - BACKEND_URL=http://backend:8080
     depends_on:
       - backend
 
