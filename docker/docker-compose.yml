@@ -26,12 +26,16 @@ services:
     container_name: hackathon-backend
     restart: unless-stopped
     ports:
-      - "8081:8080"
+      - "${BACKEND_PORT:-8080}:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Host=database;Port=5432;Database=${POSTGRES_DB:-hackathondb};Username=${POSTGRES_USER:-appuser};Password=${POSTGRES_PASSWORD:-apppassword}
       - Cors__AllowedOrigins=http://localhost:3000
+      - DataProtection__KeyDirectory=/tmp/signit-keys
+    env_file:
+      - path: secrets.env
+        required: false
     depends_on:
       database:
         condition: service_healthy
