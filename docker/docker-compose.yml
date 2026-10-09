@@ -34,7 +34,8 @@ services:
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Host=database;Port=5432;Database=${POSTGRES_DB:-hackathondb};Username=${POSTGRES_USER:-appuser};Password=${POSTGRES_PASSWORD:-apppassword}
       - Cors__AllowedOrigins=http://localhost:3000
-      - DataProtection__KeyDirectory=/tmp/signit-keys
+      - Storage__RootDirectory=/app/.data/storage
+      - DataProtection__KeyDirectory=/app/.data/keys
     env_file:
       - path: secrets.env
         required: true
